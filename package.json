@@ -1,0 +1,41 @@
+{
+  "name": "neflkutuphane",
+  "version": "1.0.0",
+  "description": "Prof. Dr. Necmettin Erbakan Fen Lisesi Kütüphane Uygulaması",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "",
+  "keywords": [
+    "Electron",
+    "quick",
+    "start",
+    "tutorial",
+    "demo",
+    "library",
+    "nodejs",
+    "express",
+    "library",
+    "lms",
+    "library management system",
+    "enescelep"
+  ],
+  "author": "enescelep",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
+  "dependencies": {
+    "async": "^3.2.2",
+    "bcrypt": "^5.0.1",
+    "connect-mongo": "^4.6.0",
+    "ejs": "^3.1.6",
+    "electron": "^15.1.2",
+    "express": "^4.17.1",
+    "express-session": "^1.17.2",
+    "express-validator": "^6.13.0",
+    "method-override": "^3.0.0",
+    "mongoose": "^6.0.13"
+  }
+}

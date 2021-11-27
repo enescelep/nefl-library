@@ -1,0 +1,255 @@
+<%- include('partials/_head'); %>
+<body>
+  <%- include('partials/_navbar'); %>
+    <div class="container">
+      <div class="row mt-lg-6">
+        <!-- Button trigger modal -->
+        <button
+          type="button"
+          class="col-md-8 mx-auto p-3 btn bg-info text-white"
+          data-bs-toggle="modal"
+          data-bs-target="#addBook"
+        >
+          Kitap Ekle
+        </button>
+
+        <button
+          type="button"
+          class="col-md-8 mx-auto p-3 btn bg-danger text-white"
+          data-bs-toggle="modal"
+          data-bs-target="#borrowBook"
+        >
+          Kitap Ödünç Ver
+        </button>
+
+        <button
+          type="button"
+          class="col-md-8 mx-auto p-3 btn bg-warning text-white"
+          data-bs-toggle="modal"
+          data-bs-target="#returnBook"
+        >
+          Ödünç verilen kitabı geri al
+        </button>
+      </div>
+
+      <footer
+      class="
+        footer
+        position-absolute
+        bottom-2
+        py-2
+        w-50
+        justify-content-center
+      "
+    >
+      <div class="container">
+        <div class="row align-items-center justify-content-lg-between">
+          <div class="col-12 col-md-6 my-auto">
+            <div class="copyright text-center text-sm text-lg-start">
+              ©
+              <script>
+                document.write(new Date().getFullYear());
+              </script>,
+              <a
+                href="https://enescelep.github.io"
+                class="font-weight-bold text-bold"
+                > Enes Celep</a
+              >
+              tarafından
+              <i class="fa fa-heart text-danger" aria-hidden="true"></i> ile
+              yapıldı.
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+      <!-- Add Book Modal Start -->
+      <div
+        class="modal fade"
+        id="addBook"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="addBook"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title display-5" id="addBook">Kitap Ekle</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+                <form method="POST" action="/books/add" >
+            <div class="modal-body">
+              <div class="p-4">
+                  <div class="input-group input-group-static mb-4">
+                    <label>Kitap adı</label>
+                    <input type="text" id="name" name="name" class="form-control" />
+                  </div>
+                  <div class="input-group input-group-static mb-4">
+                    <label for="bookAuthor">Kitap Kategorisi</label>
+                    <select name="category" id="category" class="form-control">
+                      <option disabled>Kitap kategorisini seçiniz.</option>
+                      <% categories.forEach((category) => { %>
+                          <option value="<%= category._id %>"><%= category.name %></option>
+                      <% })%>
+                    </select>
+                  </div>
+                  <div class="input-group input-group-static mb-4">
+                    <label>Kitap Yazarı</label>
+                    <input type="text"  id="author" name="author" class="form-control" />
+                  </div>
+                  <div class="input-group input-group-static mb-4">
+                    <label>Kitap Çıkış Yılı</label>
+                    <input type="number" id="year" name="year" class="form-control" />
+                  </div>
+                  <div class="input-group input-group-static mb-4">
+                    <label>ISBN</label>
+                    <input type="text"  id="isbn" name="isbn" class="form-control" />
+                  </div>
+
+              </div>
+            </div>
+            <div class="modal-footer">
+              <div class="text-center ">
+                <button type="button" class="btn bg-gradient-primary btn-md btn-rounded mt-4 mb-0" data-bs-dismiss="modal" >İptal</button>
+
+                <button type="submit"
+                        id="submit"
+                        value="SUBMIT" class="btn btn-round bg-gradient-info btn-md mt-4 mb-0">Değişiklikleri Kaydet</button>
+              </div>
+            </div>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Add Book Modal End-->
+
+      <!-- Borrow Book Modal Start -->
+      <div
+        class="modal fade"
+        id="borrowBook"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="borrowBook"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title display-5" id="borrowBook">
+                Kitap Ödünç Ver
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form method='post' action="/books/lendBook">
+                <div class="modal-body">
+                  <div class="p-4">
+                      <!-- Option'lara value eklemeyi unutma. -->
+                      <div class="input-group input-group-static mb-4">
+                        <label for="book">Ödünç verilecek kitap</label>
+                        <select class="form-control" id="book" name='book'>
+                          <option disabled>Kitabı seçiniz.</option>
+                          <%  books.forEach((book) => { %>
+                            <option value='<%= book._id%>' ><%= book.name %></option>
+                          <% })  %>
+                        </select>
+                      </div>
+                      <div class="input-group input-group-static mb-4">
+                        <label for="student">Ödünç verilecek öğrenci</label>
+                        <select class="form-control" id="student" name='student'>
+                          <option disabled>Kitap kategorisini seçiniz.</option>
+                          <% students.forEach((student) => { %>
+                            <option value='<%= student._id %>'><%= `${student.firstName} ${student.lastName} - ${student.schoolNumber}`  %></option>
+                          <% })  %>
+                        </select>
+                      </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <div class="text-center ">
+                    <button type="button" class="btn bg-gradient-primary btn-md btn-rounded mt-4 mb-0" data-bs-dismiss="modal" >İptal</button>
+
+                    <button type="submit"
+                            id="submit"
+                            value="SUBMIT" class="btn btn-round bg-gradient-info btn-md mt-4 mb-0">Değişiklikleri Kaydet</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+        </div>
+      </div>
+      <!-- Borrow Book Modal End -->
+
+      <!-- Return Book Modal Start  -->
+      <div
+        class="modal fade"
+        id="returnBook"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="returnBook"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title display-4" id="returnBook">
+                Kitabı Geri Ver
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+                <form method="POST" action="/books/returnBook">
+            <div class="modal-body">
+              <div class="p-4">
+                  <div class="input-group input-group-static mb-4">
+                    <label for="book">Geri verilecek kitabı seçiniz.</label>
+                    <select class="form-control" id="bookLent" name="bookLent">
+                      <option disabled>Kitabı seçiniz.</option>
+                      <% booksLent.forEach((bookLent) => { %>
+                        <option value="<%= bookLent._id %>"><%= `${bookLent.bookName}, ${bookLent.studentName}` %></option>
+                      <%  }) %>
+                      <option>
+
+                      </option>
+                    </select>
+                  </div>
+              </div>
+            </div>
+                  <div class="modal-footer">
+                    <div class="text-center ">
+                      <button type="button" class="btn bg-gradient-primary btn-md btn-rounded mt-4 mb-0" data-bs-dismiss="modal" >İptal</button>
+
+                      <button type="submit"
+                              id="submit"
+                              value="SUBMIT" class="btn btn-round bg-gradient-info btn-md mt-4 mb-0">Kitabi geri al</button>
+                    </div>
+                  </div>
+                </form>
+          </div>
+        </div>
+      </div>
+      <!-- Return Book Modal End -->
+    </div>
+  </body>
+</html>

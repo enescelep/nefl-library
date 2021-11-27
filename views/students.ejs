@@ -1,0 +1,272 @@
+<%- include('partials/_head'); %>
+<body>
+<%- include('partials/_navbar'); %>
+
+    <!-- Student Search Start -->
+    <div class="container">
+      <div class="row g-0 mt-3 py-3 text-center">
+        <div class="col-sm-6 col-md-4" style="margin-right: 25vw">
+          <div class="input-group input-group-dynamic mb-4">
+            <span class="input-group-text"
+              ><i class="fas fa-search" aria-hidden="true"></i
+            ></span>
+            <input
+              class="form-control"
+              placeholder="Öğrenci aratın"
+              id="student"
+              onkeyup="searchStudent()"
+              type="text"
+            />
+          </div>
+        </div>
+        <div class="col-4 col-md-4">
+          <button
+            type="button"
+            class="btn btn-warning"
+            data-bs-toggle="modal"
+            data-bs-target="#addStudent"
+          >
+            Öğrenci Ekle
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Student Search End -->
+
+    <!-- Student Table Start -->
+    <div class="card mt-5 container-xxl">
+      <div class="table-responsive-sm">
+        <table class="table align-items-center mb-0" id="students">
+          <thead>
+            <tr class="header">
+              <th
+                class="
+                  text-center text-uppercase text-danger text-lg
+                  font-weight-bolder
+                  opacity-7
+                "
+              >
+                Öğrenci Adı Soyadı
+              </th>
+              <th
+                class="
+                  text-center text-uppercase text-success text-lg
+                  font-weight-bolder
+                  opacity-7
+                "
+              >
+                Öğrenci Numarası
+              </th>
+              <th
+                class="
+                  text-center text-uppercase text-info text-lg
+                  font-weight-bolder
+                  opacity-7
+                  ps-2
+                "
+              >
+                Öğrencinin Ödünç Aldığı Kitap
+              </th>
+              <th class="text-secondary opacity-7"></th>
+            </tr>
+          </thead>
+          <tbody>
+          <% students.forEach((student) => { %>
+            <tr>
+              <td class="align-middle text-center">
+                <h6 class="mb-0 text-md"><%= student.firstName %> <%= student.lastName %></h6>
+              </td>
+              <td class="align-middle text-center">
+                <p class="mb-0 text-md"><%= student.schoolNumber %><p>
+              </td>
+              <td class="align-middle text-center">
+                  <% student.bookNames.forEach((book) => { %>
+                    <p class="mb-0 text-md"><%= book %><p>
+                  <% }) %>
+              </td>
+              <td class="align-middle">
+                <a
+                  class="btn bg-success btn-sm text-white"
+                  data-bs-toggle="modal"
+                  data-bs-target="#studentUpdate<%= student._id %>"
+                  data-bs-studentName="Enes Celep"
+                  data-bs-studentNumber="512"
+
+                >
+                  Güncelle
+                </a>
+                <a
+                  href="/students/delete/<%= student._id %>?_method=DELETE"
+                  class="btn btn-danger btn-sm"
+                  data-toggle="tooltip"
+                  data-original-title="Sil"
+                  onclick="return confirm('<%= student.firstName + ' ' +student.lastName %> adlı öğrenciyi silmek istediğine emin misin?')"
+                >
+                  Sil
+                </a>
+              </td>
+            </tr>
+          <%}) %>
+          </tbody>
+        </table>
+      </div>
+      <!-- Students Table End-->
+
+      <!-- Student Update Modal Start -->
+      <% students.forEach((student) => { %>
+      <div
+        class="modal fade"
+        id="studentUpdate<%= student._id %>"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="studentUpdate"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="studentUpdate">
+                Öğrenciyi Güncelle
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+                <form method="POST" action="/students/update/<%= student._id %>?_method=PUT">
+                  <div class="modal-body">
+                    <div class="p-4">
+                        <div class="input-group input-group-static mb-4">
+                          <label>Öğrenci adı</label>
+                          <input type="text" name="firstName" id="firstName" class="form-control" value="<%= student.firstName %>" />
+                        </div>
+                        <div class="input-group input-group-static mb-4">
+                          <label>Öğrenci soyadı</label>
+                          <input type="text" name="lastName" id="lastName" class="form-control" value="<%= student.lastName %>" />
+                        </div>
+                        <div class="input-group input-group-static mb-4">
+                          <label>Öğrenci numarası</label>
+                          <input type="number" id="schoolNumber" name="schoolNumber" class="form-control" value="<%= student.schoolNumber %>" />
+                        </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <div class="text-center ">
+                      <button type="button" class="btn bg-gradient-primary btn-md btn-rounded mt-4 mb-0" data-bs-dismiss="modal" >İptal</button>
+
+                      <button type="submit"
+                              id="submit"
+                              value="SUBMIT" class="btn btn-round bg-gradient-info btn-md mt-4 mb-0">Değişiklikleri Kaydet</button>
+                    </div>
+                  </div>
+                </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% })%>
+    <!-- Student Update Modal End -->
+
+    <!-- Add Student Modal Start -->
+    <div
+        class="modal fade"
+        id="addStudent"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="addStudent"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addCategory">
+                Öğrenci Ekle
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="p-4">
+                <form method="POST" action="/students/add">
+                  <div class="input-group input-group-static mb-4">
+                    <label>Öğrenci adı</label>
+                    <input type="text" name="firstName" id="firstName" class="form-control" value="" />
+                  </div>
+                  <div class="input-group input-group-static mb-4">
+                    <label>Öğrenci soyadı</label>
+                    <input type="text" name="lastName" id="lastName" class="form-control" value="" />
+                  </div>
+                  <div class="input-group input-group-static mb-4">
+                    <label>Öğrenci numarası</label>
+                    <input type="number" id="schoolNumber" name="schoolNumber" class="form-control" value="" />
+                  </div>
+                  <div class="text-center ">
+                    <button type="button" class="btn bg-gradient-primary btn-md btn-rounded mt-4 mb-0" data-bs-dismiss="modal" >İptal</button>
+
+                    <button type="submit"
+                            id="submit"
+                            value="SUBMIT" class="btn btn-round bg-gradient-info btn-md mt-4 mb-0">Değişiklikleri Kaydet</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Add Student Modal End-->
+
+    <script>
+      var studentUpdate = document.getElementById("studentUpdate");
+      studentUpdate.addEventListener("show.bs.modal", function (event) {
+        var button = event.relatedTarget;
+        const studentName = button.getAttribute("data-bs-studentName");
+        const studentNumber = button.getAttribute("data-bs-studentNumber");
+
+        const studentInfo = [studentName, studentNumber];
+        var modalTitle = studentUpdate.querySelector(".modal-title");
+        var modalBodyInput = studentUpdate.querySelector(".modal-body form");
+        modalTitle.textContent = studentName + " Adlı Öğrenciyi Güncelle";
+        studentInfo.forEach((info, index) => console.log(index, info));
+        for (let i = 0; i < modalBodyInput.length; i++) {
+          studentUpdate.querySelector(".modal-body form")[i].value = studentInfo[i];
+        }
+      });
+    </script>
+
+    <script>
+      function searchStudent() {
+        let input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("student");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("students");
+        tr = table.getElementsByTagName("tr");
+        console.log(table)
+        for (i = 0; i < tr.length; i++) {
+          td = tr[i].getElementsByTagName("td")[0];
+          if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              tr[i].style.display = "";
+            } else {
+              tr[i].style.display = "none";
+            }
+          }
+        }
+      }
+    </script>
+
+<%- include('partials/_footer')%>
+
+</body>
+</html>

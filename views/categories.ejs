@@ -1,0 +1,246 @@
+<%- include('partials/_head'); %>
+<body>
+<%- include('partials/_navbar'); %>
+
+    <!-- Category Search Start -->
+    <div class="container">
+      <div class="row g-0 mt-3 py-3 text-center">
+        <div class="col-sm-6 col-md-4" style="margin-right: 25vw">
+          <div class="input-group input-group-dynamic mb-4">
+            <span class="input-group-text"
+              ><i class="fas fa-search" aria-hidden="true"></i
+            ></span>
+            <input
+              class="form-control"
+              placeholder="Kategori aratın"
+              id="category"
+              onkeyup="searchCategory()"
+              type="text"
+            />
+          </div>
+        </div>
+        <div class="col-4 col-md-4">
+          <button
+            type="button"
+            class="btn btn-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#addCategory"
+          >
+            Kategori Ekle
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Category Search End -->
+
+    <!-- Categories Table Start -->
+    <div class="card mt-5 container-xxl">
+      <div class="table-responsive-sm">
+        <table class="table align-items-center mb-0" id="categories">
+          <thead>
+            <tr class="header">
+              <th
+                class="
+                  text-center text-uppercase text-danger text-md
+                  font-weight-bolder
+                  opacity-7
+                "
+              >
+                Kategori Adı
+              </th>
+              <th
+                      class="
+                  text-center text-uppercase text-warning text-md
+                  font-weight-bolder
+                  opacity-7
+                "
+              >
+                Kategoriye Ait Kitaplar
+              </th>
+              <th class="text-secondary opacity-7"></th>
+            </tr>
+          </thead>
+          <tbody>
+          <% categories.forEach((category) => { %>
+            <tr>
+              <td class="align-middle text-center">
+                <h6 class="mb-0 text-md"><%= category.name %></h6>
+              </td>
+              <td class="align-middle text-center">
+                <% category.bookNames.forEach((name) => { %>
+                <p class="mb-0 text-md">
+                  <%= name %>
+                </p>
+                <% }) %>
+              </td>
+
+              <td class="align-middle">
+                <a
+                  class="btn bg-success btn-sm text-white"
+                  data-bs-toggle="modal"
+                  data-bs-target="#categoryUpdate<%= category._id %>"
+                  data-category-name=<%= category.name %>
+                >
+                  Güncelle
+                </a>
+                <a
+                  href="categories/delete/<%= category._id %>?_method=DELETE"
+                  class="btn btn-danger btn-sm"
+                  data-toggle="tooltip"
+                  data-original-title="Sil"
+                  onclick="return confirm('<%= category.name %> adlı kategoriyi silmek istediğinize emin misiniz? Eğer kategoriye ait kitap varsa silinmeyecektir. Önce kitapları silmeniz gerekmektedir. ')"
+                >
+                  Sil
+                </a>
+              </td>
+            </tr>
+          <% }) %>
+          </tbody>
+        </table>
+      </div>
+      <!--Categories Table End-->
+
+      <!-- Category Update Modal Start -->
+      <% categories.forEach((category) => { %>
+      <div
+        class="modal fade"
+        id="categoryUpdate<%= category._id %>"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="categoryUpdate"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="categoryUpdate">
+                Kategoriyi Güncelle
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form method="POST" action="/categories/update/<%= category._id %>?_method=PUT" >
+            <div class="modal-body">
+              <div class="p-4">
+                  <div class="input-group input-group-static mb-4">
+                    <label>Kategori adı</label>
+                    <input type="text" id="name" name="name" class="form-control" value="<%= category.name %>" />
+
+                  </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <div class="text-center ">
+                <button type="button" class="btn bg-gradient-primary btn-md btn-rounded mt-4 mb-0" data-bs-dismiss="modal" >İptal</button>
+
+                <button type="submit"
+                        id="submit"
+                        value="SUBMIT" class="btn btn-round bg-gradient-info btn-md mt-4 mb-0">Değişiklikleri Kaydet</button>
+              </div>
+            </div>
+                </form>
+          </div>
+        </div>
+      </div>
+    </div>
+<% }) %>
+    <!-- Category Update Modal End -->
+
+    <!-- Add Category Modal Start -->
+    <div
+        class="modal fade"
+        id="addCategory"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="addCategory"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="addCategory">
+                Kategori Ekle
+              </h4>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+                <form method="POST" role="form" name="addCategory" id="addCategory" action="/categories/add" novalidate>
+            <div class="modal-body">
+              <div class="p-4">
+                  <div class="input-group input-group-static mb-4">
+                    <label>Kategori adı</label>
+                    <input type="text" id="name" name="name" class="form-control"  />
+                  </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <div class="text-center ">
+                <button type="button" class="btn bg-gradient-primary btn-md btn-rounded mt-4 mb-0" data-bs-dismiss="modal" >İptal</button>
+
+                <button type="submit"
+                        id="submit"
+                        value="SUBMIT" class="btn btn-round bg-gradient-info btn-md mt-4 mb-0">Kategori Ekle</button>
+              </div>
+            </div>
+                </form>
+          </div>
+        </div>
+      </div>
+
+    <!-- Add Category Modal End-->
+
+    <script>
+      const bookUpdate = document.getElementById("categoryUpdate");
+      bookUpdate.addEventListener("show.bs.modal", function (event) {
+        const button = event.relatedTarget;
+        const category = button.getAttribute("data-category-name");
+        let modalTitle = bookUpdate.querySelector(".modal-title");
+        let modalBodyInput = bookUpdate.querySelector(".modal-body input");
+
+        modalTitle.textContent = category.name + " Adlı Kategoriyi Güncelle";
+        modalBodyInput.value = category.name;
+      });
+    </script>
+    <script>
+      $(document).on("click", "tableCategoryName", () => {
+        let category = $(this).data("category-name");
+        $(".modal-body #categoryName").val(category);
+      });
+    </script>
+
+    <script>
+      function searchCategory() {
+        let input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("category");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("categories");
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 0; i < tr.length; i++) {
+          td = tr[i].getElementsByTagName("td")[0];
+          console.log(td);
+          if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              tr[i].style.display = "";
+            } else {
+              tr[i].style.display = "none";
+            }
+          }
+        }
+      }
+    </script>
+  <%- include('partials/_footer')%>
+  </body>
