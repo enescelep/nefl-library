@@ -4,7 +4,8 @@
   "description": "Prof. Dr. Necmettin Erbakan Fen Lisesi Kütüphane Uygulaması",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "dist": "electron-builder --win"
   },
   "repository": "",
   "keywords": [
@@ -24,6 +25,8 @@
   "author": "enescelep",
   "license": "CC0-1.0",
   "devDependencies": {
+    "electron-builder": "^22.14.5",
+    "electron": "^15.1.2",
     "nodemon": "^2.0.15"
   },
   "dependencies": {
@@ -31,7 +34,6 @@
     "bcrypt": "^5.0.1",
     "connect-mongo": "^4.6.0",
     "ejs": "^3.1.6",
-    "electron": "^15.1.2",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
     "express-validator": "^6.13.0",
