@@ -10,9 +10,6 @@ const bookRoute = require('./routes/bookRoute');
 const categoryRoute = require('./routes/categoryRoute');
 const teacherRoute = require('./routes/teacherRoute');
 
-require('./public/');
-require('./views/');
-
 const app = express();
 
 const PORT = 5555;
