@@ -1,6 +1,6 @@
 {
   "name": "neflkutuphane",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "Prof. Dr. Necmettin Erbakan Fen Lisesi Kütüphane Uygulaması",
   "main": "main.js",
   "scripts": {
@@ -29,6 +29,19 @@
     "electron": "^15.1.2",
     "nodemon": "^2.0.15"
   },
+  "extraResources": [
+    {
+      "from": "../views",
+      "to": "views"
+    },
+    {
+      "from": "../public",
+      "to": "public"
+    }
+  ],
+  "files": [
+    "**/*"
+  ],
   "dependencies": {
     "async": "^3.2.2",
     "bcrypt": "^5.0.1",
