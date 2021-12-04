@@ -4,7 +4,8 @@ const BookLent = require('../models/BookLent');
 
 exports.getAllStudents = async (req, res) => {
   try {
-    const students = await Student.find({}).sort('-updatedAt');
+    const students = await Student.find({}).sort('schoolNumber');
+
     res.render('students', {
       students,
     });
