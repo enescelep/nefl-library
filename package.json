@@ -29,10 +29,12 @@
     "electron": "^15.1.2",
     "nodemon": "^2.0.15"
   },
-  "extraFiles": [
-    "views",
-    "public"
-  ],
+  "build" : {
+    "extraFiles": [
+      "views",
+      "public"
+    ]
+  },
   "dependencies": {
     "async": "^3.2.2",
     "bcrypt": "^5.0.1",
