@@ -29,18 +29,9 @@
     "electron": "^15.1.2",
     "nodemon": "^2.0.15"
   },
-  "extraResources": [
-    {
-      "from": "../views",
-      "to": "views"
-    },
-    {
-      "from": "../public",
-      "to": "public"
-    }
-  ],
-  "files": [
-    "**/*"
+  "extraFiles": [
+    "views",
+    "public"
   ],
   "dependencies": {
     "async": "^3.2.2",
